@@ -4,11 +4,11 @@ import { ArrowUpRight, Globe, Bot, ShoppingCart, Zap } from "lucide-react";
 const projects = [
   {
     icon: ShoppingCart,
-    title: "Swiss Grooming E-commerce",
+    title: "Grooming E-commerce",
     category: "E-commerce",
     description: "A Switzerland-based unisex grooming brand e-commerce platform with optimized purchase flow, performance enhancements, and conversion-focused UX design.",
     technologies: ["WordPress", "WooCommerce", "Custom Plugins", "SEO"],
-    link: "#",
+    link: "modogrooming.com",
   },
   {
     icon: Bot,
@@ -20,19 +20,11 @@ const projects = [
   },
   {
     icon: Globe,
-    title: "SaaS Dashboard Platform",
+    title: "Hair Mastery",
     category: "Web Application",
-    description: "Full-stack analytics dashboard with real-time data visualization, user authentication, and role-based access control for a B2B startup.",
-    technologies: ["React", "TypeScript", "Node.js", "PostgreSQL"],
-    link: "#",
-  },
-  {
-    icon: Zap,
-    title: "Workflow Automation Suite",
-    category: "Automation",
-    description: "End-to-end automation system connecting CRM, email marketing, and invoicing tools — saving 25+ hours of manual work weekly.",
-    technologies: ["n8n", "REST APIs", "Zapier", "Custom Scripts"],
-    link: "#",
+    description: "Full-stack analytics dashboard with real-time data visualization, user authentication, and role-based access control for a B2C startup.",
+    technologies: ["Wordpress", "Elementor", "Hostinger", "PostgreSQL"],
+    link: "hair-mastery.com",
   },
 ];
 
@@ -83,7 +75,7 @@ const Projects = () => {
               <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
                 {project.title}
               </h3>
-              
+
               <p className="text-muted-foreground mb-4 leading-relaxed">
                 {project.description}
               </p>

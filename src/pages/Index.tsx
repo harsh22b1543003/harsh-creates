@@ -3,12 +3,14 @@ import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import Projects from "@/components/Projects";
 import Testimonials from "@/components/Testimonials";
-import Articles from "@/components/Articles";
 import About from "@/components/About";
 import BookCall from "@/components/BookCall";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-
+import RoiCalculator from "@/components/RoiCalculator";
+import BookingTrust from "@/components/BookingTrust";
+import StickyMobileCTA from "@/components/StickyMobileCTA";
+import ProjectAudit from "@/components/ProjectAudit";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -18,11 +20,15 @@ const Index = () => {
         <Services />
         <Projects />
         <Testimonials />
-        <Articles />
+        <RoiCalculator />
+        <ProjectAudit />
+
         <About />
         <BookCall />
+        <BookingTrust />
         <Contact />
       </main>
+      <StickyMobileCTA />
       <Footer />
     </div>
   );
