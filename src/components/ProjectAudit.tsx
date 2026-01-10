@@ -17,8 +17,10 @@ const ProjectAudit = () => {
 
     const toggleItem = (index: number) => {
         const isChecked = !checkedItems[index];
-        setCheckedItems({ ...checkedItems, [index]: isChecked });
-        setScore((prev) => (isChecked ? prev + 1 : prev - 1));
+        const newChecked = { ...checkedItems, [index]: isChecked };
+        setCheckedItems(newChecked);
+        const newScore = Object.values(newChecked).filter(Boolean).length;
+        setScore(newScore);
     };
 
     const scrollToContact = () => {
@@ -28,9 +30,16 @@ const ProjectAudit = () => {
         }
     };
 
+    // Circular Meter Calculations
+    const maxScore = checklist.length;
+    const percentage = Math.round((score / maxScore) * 100);
+    const radius = 60;
+    const circumference = 2 * Math.PI * radius;
+    const strokeDashoffset = circumference - (percentage / 100) * circumference;
+
     return (
         <section className="py-24 bg-secondary/30 relative">
-            <div className="container max-w-4xl">
+            <div className="container">
                 <motion.div
                     initial="hidden"
                     whileInView="visible"
@@ -45,7 +54,79 @@ const ProjectAudit = () => {
                     </p>
                 </motion.div>
 
-                <div className="bg-card border border-border rounded-3xl p-8 sm:p-12 shadow-xl">
+                <div className="grid lg:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: false }}
+                        variants={fadeInUp as unknown as Variants}
+                        className="flex flex-col items-center justify-center p-8 bg-card border border-border rounded-3xl shadow-xl"
+                    >
+                        <div className="relative w-48 h-48 flex items-center justify-center mb-6">
+                            <svg className="w-full h-full transform -rotate-90">
+                                <circle
+                                    cx="50%"
+                                    cy="50%"
+                                    r={radius}
+                                    fill="transparent"
+                                    stroke="currentColor"
+                                    strokeWidth="12"
+                                    className="text-secondary"
+                                />
+                                <motion.circle
+                                    cx="50%"
+                                    cy="50%"
+                                    r={radius}
+                                    fill="transparent"
+                                    stroke="currentColor"
+                                    strokeWidth="12"
+                                    strokeLinecap="round"
+                                    className="text-primary"
+                                    strokeDasharray={circumference}
+                                    initial={{ strokeDashoffset: circumference }}
+                                    animate={{ strokeDashoffset }}
+                                    transition={{ duration: 0.5, ease: "easeOut" }}
+                                />
+                            </svg>
+                            <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                <span className="text-4xl font-bold text-foreground">{percentage}%</span>
+                                <span className="text-sm text-muted-foreground">Match</span>
+                            </div>
+                        </div>
+
+                        <div className="text-center space-y-6 w-full">
+                            <div>
+                                <p className="text-lg font-medium mb-2">
+                                    {score >= 3 ? "We're a great match!" : "Let's discuss your needs."}
+                                </p>
+                                <p className="text-sm text-muted-foreground">
+                                    {score >= 3
+                                        ? "Your project aligns perfectly with my expertise."
+                                        : "Select at least 3 items to see if we're a fit."}
+                                </p>
+                            </div>
+
+                            {score >= 3 ? (
+                                <motion.div
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    className="w-full"
+                                >
+                                    <button
+                                        onClick={scrollToContact}
+                                        className="w-full inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-colors shadow-lg hover:shadow-primary/20"
+                                    >
+                                        Let's Start the Conversation <ArrowRight className="w-5 h-5" />
+                                    </button>
+                                </motion.div>
+                            ) : (
+                                <div className="h-14 flex items-center justify-center text-muted-foreground text-sm italic">
+                                    Complete the checklist to proceed
+                                </div>
+                            )}
+                        </div>
+                    </motion.div>
+
                     <motion.div
                         variants={staggerContainer as unknown as Variants}
                         initial="hidden"
@@ -61,12 +142,12 @@ const ProjectAudit = () => {
                                 role="checkbox"
                                 aria-checked={!!checkedItems[index]}
                                 onClick={() => toggleItem(index)}
-                                className={`w-full text-left flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50 ${checkedItems[index]
+                                className={`w-full text-left flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50 ${checkedItems[index]
                                     ? "bg-primary/10 border-primary/50 shadow-[0_0_15px_rgba(var(--primary),0.1)]"
-                                    : "bg-background/50 border-border hover:border-primary/50"
+                                    : "bg-card border-border hover:border-primary/50"
                                     }`}
                             >
-                                <div className={`w-6 h-6 rounded-full flex items-center justify-center border transition-colors ${checkedItems[index] ? "bg-primary border-primary" : "border-muted-foreground"
+                                <div className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center border transition-colors ${checkedItems[index] ? "bg-primary border-primary" : "border-muted-foreground"
                                     }`}>
                                     {checkedItems[index] && <CheckCircle2 className="w-4 h-4 text-primary-foreground" />}
                                 </div>
@@ -75,44 +156,6 @@ const ProjectAudit = () => {
                                 </span>
                             </motion.button>
                         ))}
-                    </motion.div>
-
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: false }}
-                        variants={fadeInUp as unknown as Variants}
-                        className="mt-12 pt-8 border-t border-border">
-                        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-                            <div>
-                                <p className="text-sm text-muted-foreground uppercase tracking-wider font-semibold mb-1">
-                                    Fit Score
-                                </p>
-                                <div className="flex items-baseline gap-2">
-                                    <span className="text-4xl font-bold text-primary">{score * 20}%</span>
-                                    <span className="text-muted-foreground">Match</span>
-                                </div>
-                            </div>
-
-                            {score >= 3 ? (
-                                <motion.div
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    className="flex-1 text-center sm:text-right"
-                                >
-                                    <button
-                                        onClick={scrollToContact}
-                                        className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-colors shadow-lg hover:shadow-primary/20"
-                                    >
-                                        Let's Start the Conversation <ArrowRight className="w-5 h-5" />
-                                    </button>
-                                </motion.div>
-                            ) : (
-                                <div className="flex-1 text-center sm:text-right text-muted-foreground text-sm">
-                                    Select at least 3 items to unlock the next step.
-                                </div>
-                            )}
-                        </div>
                     </motion.div>
                 </div>
             </div>
