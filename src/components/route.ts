@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const toEmail = "work.17akki.akash@gmail.com"; // Your receiving email
+const toEmail = "harshitup9335@gmail.com"; // Your receiving email
 
 export async function POST(req: Request) {
     try {
